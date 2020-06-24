@@ -1,2 +1,2 @@
-# Stat311Win2020
+# STAT 311 Summer 2020
 This is the lab website for Summer 2020 Stat 311 at the University of Washington. Lab materials modified from the OpenIntro materials available on GitHub with work from Anna Neufeld, with additional inspiration taken from the labs of Yibi Huang at the University of Chicago and Tavis Abrahamson at Duke. 

@@ -1,5 +1,5 @@
 ---
-title: 'Introduction to R: Pre-lab'
+title: 'Lab 0: Introduction to R'
 output:
   html_document:
     css: ../lab.css
@@ -119,7 +119,7 @@ For more information about the OpenIntro lab report templates, you can check out
 
 If you are unable to open RStudio on your machine, try to visit a TA in office hours before Thursday's lab section. The TAs may be able to help you work through error messages and get started. If you are unable to visit office hours before the first lab section, don't fret! While you should eventually have RStudio downloaded on your machine, it is okay to complete the first week's tutorial and lab using the online version of RStudio. The online version avoids the issues that students sometimes run into regarding installation, but it is less ideal for long term use because it tends to be quite slow. 
 
-If you cannot install RStudio, visit [rstudio.cloud](https://rstudio.cloud) and follow the instructions to make an account. Once you have made an account, click "New Project". You should now see the same 3-paneled screen described in the section **Getting Started** above. Work through the rest of this pre-lab using this online RStudio: verify that you can use RStudio as a basic calculator by running commands in the console, and attempt to download the required packages. Finally, practice creating and knitting an RMarkdown file. 
+If you cannot install RStudio, visit [rstudio.cloud](https://rstudio.cloud) and follow the instructions to make an account. Once you have made an account, click "New Project". You should now see the same 3-paneled screen described in the section **Getting Started** above. Work through the rest of this lab using this online RStudio: verify that you can use RStudio as a basic calculator by running commands in the console, and attempt to download the required packages. Finally, practice creating and knitting an RMarkdown file. 
 
 
 # Acknowledgements.

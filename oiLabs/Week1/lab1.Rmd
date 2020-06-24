@@ -1,5 +1,5 @@
 ---
-title: "Lab 0: Working with RStudio and RMarkdown"
+title: "Lab 1: Introduction to R, RStudio, and RMarkdown"
 output:
   html_document:
     css: ../lab.css
@@ -29,7 +29,7 @@ This lab will require you to run some very basic commands in R. You will explore
 
 ## Getting Started
 
-Hopefully you were able to download R and RStudio by following the Prelab instructions. If so, go ahead and launch RStudio. You should see a window that looks similar to the image shown below (your version will likely be newer).
+Hopefully you were able to download R and RStudio by following the Lab 0  instructions. If so, go ahead and launch RStudio. You should see a window that looks similar to the image shown below (your version will likely be newer).
 
 ![](r-interface-2016.png)
 <br>
@@ -50,14 +50,14 @@ packages that make our lives easier, and we can use them for free. For many labs
 
 - The suite of **tidyverse** packages: for data wrangling and data visualization
 
-Hopefully you were able to install these packages using ``install.packages()`` using the pre-lab instructions. Note that you can check to see which packages (and which versions) are installed by
-inspecting the *Packages* tab in the lower right panel of RStudio. If you do not see ``tidyverse`` in this panel, it means that you need to run the following code from the pre-lab. 
+Hopefully you were able to install these packages using ``install.packages()`` using Lab 0 instructions. Note that you can check to see which packages (and which versions) are installed by
+inspecting the *Packages* tab in the lower right panel of RStudio. If you do not see ``tidyverse`` in this panel, it means that you need to run the following code from Lab 0. 
 
 ```{r install-packages, message = FALSE, eval=FALSE}
 install.packages("tidyverse")
 ```
 
-If you already ran this in the prelab, do not run it again. 
+If you already ran this in Lab 0, do not run it again. 
 
 Next, you need to load these packages in your working environment. We do this with
 the `library` function. Note that you need to **load** the packages every time you restart RStudio, whereas you only need to **install** the packages once ever. 
@@ -70,13 +70,13 @@ library(tidyverse)
 
 ### Interacting with R in the Console
 
-As you saw in the pre-lab, the most basic way to interact with RStudio is to use the console as a calculator. Using the console, you can perform basic arithmetic operations (try running `5*12` or `100/11`) and you can assign values to variables (try running `my_variable <- 122` and then check your *Environment* tab). In theory, you could accomplish anything that you wanted using `R` in this manner. However, an important part of statistics is sharing and communicating your work. In order to share your code and analyses with others, you must be able to record your code and save it for later. That is where RMarkdown files come in. 
+As you saw in Lab 0, the most basic way to interact with RStudio is to use the console as a calculator. Using the console, you can perform basic arithmetic operations (try running `5*12` or `100/11`) and you can assign values to variables (try running `my_variable <- 122` and then check your *Environment* tab). In theory, you could accomplish anything that you wanted using `R` in this manner. However, an important part of statistics is sharing and communicating your work. In order to share your code and analyses with others, you must be able to record your code and save it for later. That is where RMarkdown files come in. 
 
 * * *
 
 ## RMarkdown files
 
-If you write all of your code in the console, you will not be able to share your work with anyone else or refer back to it later. We will be using R Markdown to create reproducible lab reports. You should have been able to practice making your first RMarkdown file in the Pre-lab assignment. 
+If you write all of your code in the console, you will not be able to share your work with anyone else or refer back to it later. We will be using R Markdown to create reproducible lab reports. 
 
 For this lab assignment, we have created a lab report template. Please download the template from Canvas. Then, click on the template to open it as you would open any file. Since the file has the `.Rmd` extension, your computer should automatically open the file in RStudio. If your computer fails to open the file in RStudio, you may also start in RStudio and then use the buttons File, Open File, etc. to navigate to the lab template. 
 
@@ -113,7 +113,7 @@ Finally, on lab templates we often give you space for both code and written expl
 
 ## Creating variables
 
-You saw on the pre-lab that you can also define variables in R and save values to these variables. Complete the following two exercises.
+You saw in Lab 0 that you can also define variables in R and save values to these variables. Complete the following two exercises.
 
 2. Use R to compute the value $\sqrt{1127}$. Save this value to a variable `X`. 
 

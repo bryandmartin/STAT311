@@ -1,0 +1,57 @@
+---
+title: "Lab 0"
+author: "Name"
+date: "06/25/20"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+* * *
+
+### Exercise 1: 
+
+```{r}
+## Write code to show your work here
+```
+
+(write written explanation here)
+
+### Exercise 2: 
+
+```{r}
+## Write code to show your work here
+```
+
+(write written explanation here)
+
+### Exercise 3: 
+
+```{r}
+## Write code to show your work here
+```
+
+(write written explanation here)
+
+### Exercise 4: 
+
+```{r}
+## Write code to show your work here
+```
+
+(write written explanation here)
+
+### Exercise 5: 
+
+```{r}
+## Write code to show your work here
+```
+
+(write written explanation here)
+
+```{r}
+## Write code to show your work here
+```
+

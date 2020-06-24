@@ -1,0 +1,2 @@
+# Stat311Win2020
+This is the lab website for Stat 311 at the University of Washington, taught by Prof. Ranjini Grove during winter quarter of 2020. Lab materials modified from the OpenIntro materials available on github, with additional inspiration taken from the labs of Yibi Huang at the University of Chicago and Tavis Abrahamson at Duke. 

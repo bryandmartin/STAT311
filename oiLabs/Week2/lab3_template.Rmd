@@ -1,0 +1,99 @@
+---
+title: "Lab 3: Exploring Numerical Data"
+author: "Name"
+date: "Date of lab session"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+## Include the command to load the data here!!!!
+```
+
+* * *
+
+### Exercise 1: 
+
+(Write your answer for exercise 1 here. This exercise doesn't have any code associated with it) 
+
+### Exercise 2: 
+
+```{r}
+# Insert code for exercise 2 here 
+# (make the sfo_feb_flights dataset and count the number of observations)
+```
+
+(write your final answer here)
+
+### Exercise 3: 
+
+
+```{r}
+# Insert code for exercise 3 here 
+# (make the histogram) 
+```
+
+Write the answer to exercise 3 here (describe the distribution)
+
+### Exercise 4: 
+
+```{r}
+# Insert code for exercise 4 here 
+# (calculate mean and median)
+```
+
+Write the answer to exercise 4 here (compare mean and median, interpret difference). 
+
+
+### Exercise 5:
+
+```{r}
+# Insert code for exercise 5 here 
+# (group by, summarize by)
+```
+
+Write the answer to exercise 5. Don't forget to also submit the answer on Canvas.
+
+
+### Exercise 5:
+
+
+```{r}
+# Insert code for exercise 6 here 
+# (group by, summarize by)
+```
+
+Write the answer to exercise 6. 
+
+### Exercise 7:
+
+Write the answer to exercise 7.
+
+```{r}
+# Insert code for exercise 7 here 
+# (group by, summarize by)
+```
+
+
+### Exercise 8:
+
+Write the answer to exercise 8 (describe the relationship)
+
+```{r}
+# Insert code for exercise 8 here 
+# (make the scatterplot)
+```
+
+
+### Exercise 9
+
+Write your explanation for exercise 9 here. 
+
+```{r}
+# Back up the answer to exercise 9 with relevant code
+```
+
+
+
+
+

@@ -1,0 +1,52 @@
+---
+title: "Lab 2: Tidyverse Tutorial"
+name: "Fill in name"
+date: "06/29/20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Scratchwork
+
+Use this section of the document for notes, scratchwork, and explorations. Remember that you should load your packages and your dataset in a code chunk. 
+
+```{r}
+```
+
+```{r}
+```
+
+```{r}
+```
+
+## Exercise 1
+
+```{r}
+```
+
+
+## Exercise 2
+
+```{r}
+```
+
+
+
+## Exercise 3
+
+```{r}
+```
+
+## Exercise 4
+
+```{r}
+```
+
+
+## Exercise 5
+
+```{r}
+```

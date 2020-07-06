@@ -1,0 +1,298 @@
+---
+title: "Lab 4: Exploring Categorical Data"
+output:
+  html_document:
+    css: ../lab.css
+    highlight: pygments
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r global-options, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+library(tidyverse)
+library(openintro)
+library(oilabs)
+```
+
+## Introduction
+
+<div id="boxedtext">
+**Learning Objectives**
+Use R to numerically and visually summarize:
+
+ + A single categorical variable
+ + The relationship between a categorical variable and a quantitative variable
+ + The relationship between two categorical variables
+</div>
+
+As with last week, you will need to create an R Markdown lab report and submit it to Canvas. You may download the template for the lab report from Canvas. 
+
+## The CDC Data
+The Centers for Disease Control (CDC) conducts the Behavioral Risk Factor Surveillance System (BRFSS). The BRFSS is an annual telephone survey of 350,000 people in the United States that is designed to identify risk factors in the adult population and report emerging health trends. For example, respondents are asked about their diet and weekly physical activity, their HIV/AIDS status, possible tobacco use, and even their level of healthcare coverage. The [CDC Web site](http://www.cdc.gov/brfss) contains a complete description of the survey, including the research questions that motivate the study and many interesting results derived from the data.
+
+We will focus on a random sample of 20,000 people from the BRFSS survey conducted in 2000. While there are over 200 variables in this data set, we will work with a small subset.
+
+We will read in the dataset from the website of Dr. Yibi Huang at the University of Chicago, who developed the original version of this lab assignment. `read.table()` is one of many ways to read in a dataset. While you are at it, don't forget to load our usual packages. **These lines of code must be included in the top of your RMarkdown document in order for your document to knit**. 
+
+```{r, message=FALSE, warning=FALSE, eval=TRUE}
+library(tidyverse)
+cdc <- read.table("http://www.stat.uchicago.edu/~yibi/s220/labs/data/cdc.dat", 
+                  header=TRUE)
+```
+
+To make sure that you have loaded the data correctly, try opening it in the data viewer with `View(cdc)`. Remember that you may also view the variable names with `names(cdc)` and you can take a peak at the different variables with `glimpse(cdc)`. 
+
+Each one of these variables corresponds to a question that was asked in the survey. For example, for `genhlth`, respondents were asked to evaluate their general health, responding either excellent, very good, good, fair or poor.  The `exerany` variable indicates whether the respondent exercised in the past month (y) or did not (n). `hlthplan` indicates whether the respondent had some form of health coverage (y) or did not (n). `smoke100` indicates whether the respondent had smoked at least 100 cigarettes in their lifetime. The other variables record the respondent’s height in inches, weight in pounds as well as their desired weight, `wtdesire`, `age` (in years), and `gender`.
+
+<!-- 1. How many cases are in this dataset? How many variables? For each variable, identify its variable type (e.g. numerical–continuous, numerical– discrete, categorical–ordinal, categorical–nominal). -->
+
+* * * 
+
+## General Health
+
+Consider the variable `genhlth` in the CDC dataset, which takes on values `excellent`, `very good`, `good`, `fair`, and `poor`. Since this is a categorical variable, we cannot summarize it with the tools we practiced last week. We cannot compute the mean or make a histogram.  This week, we will explore tools in R for summarizing a categorical variable through tables and bar charts.
+
+### Frequency and Relative Frequency Tables
+
+<!-- The `count()` command is useful for creating frequency tables for categorical variables. Note that `count()` is just a convenient shortcut function; you could have created this same output using the skills you learned last week using a combination of `group_by()`, `summarize()`, and `n()`.  -->
+
+<!-- ```{r} -->
+<!-- cdc %>% count(genhlth) -->
+<!-- ``` -->
+
+<!-- For many of the functions that we will be relying on, it will be useful to make a new type of R object: a table.  -->
+
+The simplest type of table in R is a frequency table for a single categorical variable. All we need to do is ``select()`` our variable of interest and pipe (`%>%`) this variable into the function `table()`. Try it out with the command below: 
+
+```{r}
+cdc %>% select(genhlth) %>% table()
+```
+
+Note that R has ordered the categories of `genhlth` alphabetically. `genhlth` is an ordinal variable, and our table will be more readable if we put the categories in the natural order of excellent > very good > good > fair > poor. We need to tell R that the categories of ``genhlth`` should be treated as ordered. We can accomplish this with the following command: 
+
+```{r, eval=TRUE, message=FALSE}
+cdc <- cdc %>% mutate(genhlth = ordered(genhlth, 
+            levels=c("poor", "fair", "good", 
+            "very good", "excellent"))) 
+```
+
+We have over-ridden the original `genhlth` column of the dataset with a new, ordered variable. When we remake the table, the order is more natural:
+
+```{r}
+cdc %>% select(genhlth) %>% table()
+```
+
+Suppose that we would rather see relative frequencies (percentages). We can *pipe* (``%>%``) the table above into a new function, ``prop.table()``, that divides all entries in the table by the total number of observations in the table.  Try running the following command: 
+
+```{r}
+cdc %>% select(genhlth) %>% table() %>% prop.table()
+```
+
+1. What proportion of the sample reports being in poor health? Round your answer to 2 decimal places. 
+
+```{r, include=FALSE}
+cdc %>% select(genhlth) %>% table() %>% prop.table()
+```
+
+A nice visual display of a frequency table for one variable is a bar plot. Bar plots are available in the `ggplot` framework using the command `geom_bar()`. 
+
+2. Make a bar plot of the `genhlth` variable using ``ggplot``. If you need a hint, start with code that you used to create histograms on lab 1, then incorperate the following components: 
+<ul>
+<li>  `data = cdc` </li> 
+<li>  `aes(x=genhlth)` </li> 
+<li>  `geom_bar()` </li> 
+</ul>
+
+```{r, eval=FALSE, include=FALSE}
+ggplot(data=cdc, aes(x=genhlth))+geom_bar()
+```
+
+* * * 
+
+## General Health and BMI
+
+### Defining BMI
+
+[Body Mass Index](http://en.wikipedia.org/wiki/Body_mass_index) (BMI) is a weight to height ratio and can be calculated as:
+$$
+BMI = \frac{weight \ in \ pounds}{(height \ in \ inches)^2} \times 703
+$$
+
+703 is the approximate conversion factor to change units from metric (meters and kilograms) to imperial (inches and pounds). BMI does not appear directly in the `cdc` dataset, but last week we learned the tools to add new variables to our dataset. 
+
+3. Add the new variable `BMI` to the `cdc` dataset.  What is the mean BMI in the dataset? Round your answer to 1 decimal place. The following hints might help:
+<ul>
+<li> For exercise 7 on lab 1, we used ``mutate()`` to add the ``avg_speed`` variable to the dataset using the formula ``distance/(air_time/60)``. Use the same method here to add ``BMI``to the dataset using the formula given above. </li>
+<li> After you have added `BMI` to the dataset, you can use ``summarize()`` to find the mean BMI. For hints on how to do this, see Exercise 4 on lab 1.  </li>
+</ul>
+```{r, echo=FALSE, include=FALSE}
+cdc <- cdc %>% mutate(BMI = weight/height^2*703)
+cdc %>% summarize(meanBMI = mean(BMI))
+```
+
+### Box plots
+
+Suppose we want to know whether the distribution of the quantitative variable BMI is different among individuals with different levels of `genhlth`. In other words, we want to know if there is a relationship between `genhlth`, a categorical variable, and `BMI`, a quantitative variable. One great way to do this is to create side-by-side boxplots showing the distribution of BMI for each separate value of `genhlth`. Try out the code below:
+
+```{r,eval=FALSE}
+ggplot(cdc, aes(x=genhlth, y=BMI)) + geom_boxplot()
+```
+
+1. Describe the relationship you see (if any) between general health and BMI. 
+
+* * * 
+
+## General Health and Smoking
+
+Now let's consider the relationship between `genhlth`, which we explored above, and `smoke100`, which is a `yes/no` variable measuring whether an individual has smoked more than 100 times in their lifetime. We have already explored the *univariate distribution* of `genhlth`, but we should take a quick look at the *univariate distribution* of `smoke100`.
+
+
+1. What proportion of individuals in the dataset smoke? Round your answer to two decimal places. **Hint: your code will look a lot like your code for exercise 1.**
+
+```{r, include=FALSE}
+cdc %>% select(smoke100) %>% table() %>% prop.table()
+```
+
+### Contingency Tables
+
+To explore the relationship between two categorical variables, `genhlth` and `smoke100`, we should start with a contingency table. A contingency table is simply a table of two categorical variables. We can make one as follows by selecting two variables from our dataset.
+
+```{r, eval=FALSE}
+cdc %>% select(smoke100, genhlth) %>% table()
+```
+<!-- `tally()`, availble in the `mosaic` package, is a great tool for contingency tables. This means that we need to install the mosaic library. Remember that ``installing`` a package is something that you only need to do once on your computer: **run the following chunk of code in your console: don't include it in your RMardown file**. -->
+
+<!-- ```{r, eval=FALSE} -->
+<!-- install.packages("mosaic") -->
+<!-- ``` -->
+
+<!-- One downside of all the great available packages in R is that sometimes the packages can contradict each-other. `tidyverse` also has a function called `tally`, but it is actually not the one that we want. This means that when we use the function ``tally``, we should tell R exactly which version of the ``tally`` function we want to use.  -->
+
+<!-- ```{r, message=FALSE, warning=FALSE, eval=TRUE} -->
+<!-- mosaic::tally(~smoke100+genhlth, data=cdc) -->
+<!-- ``` -->
+
+<!-- This says to use the function called `tally` from the `mosaic` package, and to make a table of the variables `smoke100` and `genhlth` from the `cdc` dataset. Since we are directly telling R where to find the ``tally`` function, we don't need to separately load the mosaic package using ``library(mosaic)``.  -->
+
+You may notice that the contingency table above does not show row totals or column totals. We can take care of this by piping this table into the ``addmargins()`` function. 
+
+```{r, eval=FALSE}
+cdc %>% select(smoke100, genhlth) %>% table() %>% addmargins()
+```
+
+This table is showing raw counts. It is often more useful to look at percentages, but now that we have two variables we need to be careful to specify which type of percentages we want. For example, consider the following table, which shows the **joint** percentages. 
+
+```{r, eval=TRUE, message=FALSE, warning=FALSE}
+cdc %>% select(smoke100, genhlth) %>% table() %>% prop.table()
+```
+
+The ``prop.table()`` function took every entry of our original table and divided by 20,000 (the number of cases in the entire dataset). 
+
+6. In one sentence, explain what the number 0.02240 in the table above tells us. 
+
+### Mosaic Plots
+
+A mosaic plot is a cool graphical summary of a two-way table. Run the command below to make a mosaic plot: 
+
+```{r}
+cdc %>% select(smoke100, genhlth) %>% table() %>% mosaicplot(color=TRUE)
+```
+
+The areas of the boxes in a mosaic plot correspond to the proportion of total observations with that combination of variable values. For example, the box corresponding to `n` and `poor` in the upper left corner has an area that is 1.145\% of the overall area in the plot. The ``color=TRUE`` command simply adds shading to the plot for aesthetic purposes (try this command without ``color=TRUE`` and see what happens). 
+
+7. The box corresponding to `excellent` and `y` should have an area that is what proportion of the area of the entire plot? Round your answer to two decimal places.  
+
+### Calculating Row and Column Percentages
+
+Sometimes we are interested in the row percentages or column percentages in our table. Let's examine the conditional distribution of ``genhlth`` *given* ``smoke100``.  If instead of using ``prop.table()`` we use ``prop.table(1)``, R will compute row percentages in our table. The `1` stands for "row". 
+
+```{r, eval=TRUE}
+cdc %>% select(smoke100, genhlth) %>% table() %>% prop.table(1)
+```
+
+Among individuals who do not smoke, 27\% report being in excellent health. Among individuals who smoke, only 19\% report being in excellent health. If we instead use ``prop.table(2)``, we get the column percentages from our original table, which correspond to the conditional distribution of ``smoke100`` *given* ``genhlth``.  The `2` stands for "column". 
+
+```{r}
+cdc %>% select(smoke100, genhlth) %>% table() %>% prop.table(2)
+```
+
+8. Consider the table that you made using `prop.table(2)`, which shows the conditional distribution of ``smoke100`` *given* ``genhlth``.  In one sentence, interpret the number 0.6617. 
+
+9. Among individuals who consider themselves to be in ``excellent`` health, what proportion have smoked 100 times? Round your answer to two decimal places. 
+
+<!-- Remembering the ``1`` and ``2`` commands for `prop.table()` can be confusing. We can arrive at all of the numbers in the row/column proportion tables through subsetting; an approach that is sometimes more intuitive. Suppose that we wanted to answer the exercise above through subsetting. We first ``filter`` our dataset to include only those who consider themselves to be in `excellent` health, and then we create a simple relative frequency table. Verify that the output of the code above matches the answer that you got from the contingency table:  -->
+
+<!-- ```{r} -->
+<!-- cdc %>% filter(genhlth=="excellent") %>% select(smoke100) %>% table() %>% prop.table() -->
+<!-- ``` -->
+
+<!-- 10. Using the subsetting approach: what proportion of individuals who have smoked 100 times report being in ``fair`` health? *Hint: you need to ``filter`` by smoke100 and then ``select`` genhlth*.  -->
+
+### Standardized Bar Plots
+
+A *standardized bar plot* is an easy way to visualize row or column percentages. Suppose that we want to visualize the distribution of ``smoke100`` *given* ` each value of ``genhlth``. We can create a barplot where the x-axis is ``genhlth`` and the bars are ``filled`` (colored) using ``smoke100``. Try out the code below: 
+
+```{r}
+ggplot(cdc, aes(x=genhlth, fill=smoke100))+geom_bar(position="fill")
+```
+
+
+
+12. Do smoking status and general health status appear to be associated? Justify your answer.
+
+
+13. Remake your bar chart of `genhlth` and `smoke100` but remove the ``position="fill"`` argument. Is this plot as useful as the previous plot?  
+```{r, echo=FALSE, include=FALSE}
+ggplot(cdc, aes(x=genhlth, fill=smoke100))+geom_bar()
+```
+
+<!-- ## Exploring the relationship between a categorical variable and two quantitative variables -->
+
+<!-- In the previous example, we wanted to know how the distribution of a quantitative variable changed within different categories of `genhlth`. Sometimes, we want to know how the relationship between **two** quantitative variables changes within different categories of a categorical variable.  -->
+
+<!-- Consider the variables `weight` and `wtdesire` (desired weight). The scatterplot below shows the relationship between the two variables. -->
+
+<!-- ```{r} -->
+<!-- ggplot(cdc, aes(x=weight, y=wtdesire))+geom_point() -->
+<!-- ``` -->
+
+<!-- Apparently there are two outliers, with incredibly large desired weights (these two people must be kidding). To remove the two outliers so that we take a closer look at big chunk of points, we can remove these two observations from the plot using `filter`.  -->
+
+<!-- ```{r} -->
+<!-- ggplot(cdc %>% filter(wtdesire<400), aes(x=weight, y=wtdesire))+geom_point() -->
+<!-- ``` -->
+
+<!-- Note that we did not actually modify the `cdc` dataset to remove these outliers; we just only plotted a filtered version.  -->
+
+<!-- 1. Describe the relationship between the two variables.  -->
+
+<!-- Now we will add in information about a categorical variable. We may wonder if the relationship differs by gender. A nice way to study this question is to color our scatterplot by gender. Earlier, our scatterplot had just `x` and `y` as axes; now we add `color` as a third dimension.  -->
+
+<!-- ```{r} -->
+<!-- ggplot(cdc %>% filter(wtdesire<400), aes(x=weight, y=wtdesire, color=gender))+geom_point() -->
+<!-- ``` -->
+
+<!-- Alternatively, we could make side-by-side scatterplots for the two genders.  -->
+
+<!-- ```{r} -->
+<!-- ggplot(cdc %>% filter(wtdesire<400), aes(x=weight, y=wtdesire))+geom_point() + facet_wrap(~gender) -->
+<!-- ``` -->
+
+<!-- As an added point, it is always good to label your plot appropriately. You will get better at this with practice. Try out the following code. -->
+
+<!-- ```{r} -->
+<!-- ggplot(cdc %>% filter(wtdesire<400), aes(x=weight, y=wtdesire))+geom_point() + facet_wrap(~gender) + xlab("Actual Weight (lbs)") + ylab("Desired Weight (lbs)") -->
+<!-- ``` -->
+
+## Acknowledgements
+
+This lab is a modified version of Yibi Huang's Lab 3, developed for [Stat 220 at the University of Chicago](http://www.stat.uchicago.edu/~yibi/s220/labs/lab03.html). Yibi Huang's lab, in turn, is based off of the [OpenIntro lab framework](https://www.openintro.org/stat/labs.php.)
+
+<div id="license">
+This is a product of OpenIntro that is released under a 
+[Creative Commons Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0). 
+</div>

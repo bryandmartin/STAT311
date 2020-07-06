@@ -1,0 +1,96 @@
+---
+title: "Lab 4: Exploring Categorical Data"
+author: "Name"
+date: "07/07/2020"
+output: oilabs::lab_report
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+cdc <- read.table("http://www.stat.uchicago.edu/~yibi/s220/labs/data/cdc.dat", header=TRUE)
+cdc <- cdc %>% mutate(genhlth = ordered(genhlth, levels=c("poor", "fair", "good", "very good", "excellent"))) 
+```
+
+* * *
+
+### Exercise 1: 
+
+```{r}
+# Include the relative frequency table here. 
+```
+
+(write you answer here- don't forget to submit on Canvas as well).
+
+### Exercise 2:
+
+```{r}
+# Create a barplot
+```
+
+
+### Exercise 3:
+
+```{r}
+# Include your code to add the BMI variable
+# Include your code to find the mean BMI
+```
+
+### Exercise 4:
+
+```{r}
+# Make the boxplot
+```
+
+(describe the relationship)
+
+### Exercise 5
+
+```{r}
+# Create table here to compute your answer
+```
+
+(write your answer here)
+
+### Exercise 6
+
+```{r}
+# include the joint frequency table
+```
+
+(write your answer here. )
+
+### Exercise 7
+
+```{r}
+# Include your mosaic plot
+```
+(write your answer)
+
+### Exercise 8
+
+```{r}
+# Include the relevant table
+```
+(write your sentence here)
+
+### Exercise 9
+
+(write your answer here- additional code not required)
+
+### Exercise 10
+
+```{r}
+# Make the relevant plot
+```
+(write your answer)
+
+
+### Exercise 11
+
+```{r}
+# Make the new plot
+```
+ (comment)
+
+

@@ -1,0 +1,91 @@
+---
+title: "Lab 5"
+author: "Name"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+* * *
+
+### Exercise 1
+
+```{r}
+# Relevant code (including setting the seed)
+```
+
+**Written answer**
+
+### Exercise 2
+
+```{r}
+# Relevant code (including the random seed)
+```
+
+
+### Exercise 3
+
+```{r}
+set.seed(555)
+dice_outcomes <- c(1,2,3,4,5,6)
+# Fill in code here to simulate rolling 20 dice
+# Report results in a table. 
+```
+
+### Exercise 4
+
+```{r}
+# Setup code: do not delete
+kobe_basket <- read.delim("http://bryandmartin.github.io/STAT311/oiLabs/Week4/kobe_basket.csv", header=TRUE, sep=",")
+calc_streak <- function(shots) {
+  hits <- c(0, shots=="H", 0)
+  misses <- which(hits==0)
+  streaklengths <- diff(misses)-1
+  return(data.frame(length= streaklengths))
+}
+```
+
+```{r}
+# Include actual code for exercise 4 in this chunk
+```
+
+**Answer**
+
+### Exercise 5
+
+    
+```{r}
+# Code
+```
+    
+
+### Exercise 6
+```{r}
+## Set seed
+## Code here (simulation)
+## Code here (table)
+```
+
+### Exercise 7
+
+**Written answer**
+
+### Exercise 8
+```{r}
+## Code that prints maximum
+```
+
+### Exercise 9
+
+```{r}
+## Code that prints maximum
+```
+
+### Exercise 10
+```{r}
+## Code for two histograms
+```
+
+**Written explanation**

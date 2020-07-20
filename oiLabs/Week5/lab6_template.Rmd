@@ -1,0 +1,90 @@
+---
+title: "Lab 6: The Normal Distribution"
+author: "Name"
+date: "07/23/2020"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+fastfood <- read.csv("http://bryandmartin.github.io/STAT311/oiLabs/Week5/fastfood.csv")
+```
+
+* * *
+
+### Exercise 1: 
+
+```{r}
+
+```
+
+### Exercise 2:
+
+
+### Exercise 3: 
+
+```{r}
+
+
+```
+
+**written answer**
+
+### Exercise 4
+
+```{r}
+
+```
+
+**written answer**
+
+### Exercise 5
+
+```{r}
+# include your plot
+```
+
+**written answer**
+
+### Exercise 6
+
+```{r}
+# include your plot
+```
+
+### Exercise 7
+
+**written answer**
+
+### Exercise 8
+
+```{r}
+## Code
+```
+
+
+### Exercise 9
+
+```{r}
+## Code
+```
+
+### Exercise 10
+
+```{r}
+## Code
+```
+
+
+### Exercise 11
+
+```{r}
+# Code for theoretical and empirical
+```
+
+**written anwer**
+
+
+
+
+

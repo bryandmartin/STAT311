@@ -1,5 +1,5 @@
 ---
-title: "Lab 6: The normal distribution"
+title: "Lab 6: The Normal Distribution"
 output:
   html_document:
     css: ../lab.css
@@ -38,7 +38,7 @@ We begin by loading in our usual packages and loading in the dataset.
 ```{r load-data}
 library(tidyverse)
 library(oilabs)
-fastfood <- read.csv("http://bryandmartin.github.io/Stat311/oiLabs/Week5/fastfood.csv")
+fastfood <- read.csv("http://bryandmartin.github.io/STAT311/oiLabs/Week5/fastfood.csv")
 ```
 
 Begin by exploring the dataset with ``glimpse()``. You'll see that for every menu item there are 17 variables, many of which are

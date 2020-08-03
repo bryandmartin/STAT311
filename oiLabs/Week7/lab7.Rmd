@@ -1,0 +1,256 @@
+---
+title: "Lab 7: Sampling Distribution of Sample Proportions"
+output:
+  html_document:
+    css: ../lab.css
+    highlight: pygments
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+library(tidyverse)
+ames <- read.csv("http://bryandmartin.github.io/STAT311/oiLabs/Week7/ames.csv")
+```
+
+In this lab, you will investigate the ways in which the statistics from a random 
+sample of data can serve as point estimates for population parameters. In this lab, our goal will be to estimate a population proportion usng a sample proportion. Recall that a sample statistic is a *random variable*; its value changes depending on which random sample we draw from the population. Using R, you will have the chance to draw repeated samples from a population and study the distribution of the statistic across different samples. 
+
+<div id="boxedtext">
+**Learning Objectives:**
+
++ Understand that a sample statistic is a random variable 
++ Draw repeated samples from the same population and compute the sample proportion from each one
++ Compare the distribution of sample proportions to the true population proportion
++ Explore elements of the Central Limit Theorem in action
+</div>
+
+As always, you will be writing a lab report and uploading it to Canvas. You will be exploring your data using the **tidyverse** suite of packages. The data can be downloaded from the course lab website using the code below. Be sure to include this in your RMarkdown report! 
+
+```{r load-packages, message=FALSE, eval=TRUE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(readr)
+ames <- read_csv("http://bryandmartin.github.io/STAT311/oiLabs/Week7/ames.csv")
+```
+
+Note that you may ignore any warning issues that you see while loading the data, but you should make sure that you have 2930 observations in your `ames` dataset. Also note that you may need to run ``install.packages(readr)`` in your console in order to load this library. 
+
+## The Population Data
+
+You will be analyzing real estate data from the city of Ames, Iowa. The details of every real estate transaction in Ames is recorded by the City Assessor's office. Your population of interest for this lab is all residential home sales in Ames between 2006 and 2010.  
+
+You can see that there are quite a few variables in the data set. For this lab, you will focus on one categorical variable: `Central.Air`. `Central.Air` takes on values `Y` and `N` and records whether or not the house had central air conditioning. You want to know the proportion of homes sold in Ames during this time period that had air conditioning.  In this setting, you have the entire population of interest (all 2930 houses), so you can actually compute the population proportion. 
+
+1. Compute $\pi$, the population proportion of houses with air conditioning (hint: you can ``select`` the `Central.Air` variable and then use the `table` command). 
+
+```{r, echo=FALSE}
+ames %>% select(Central.Air) %>% table() %>% prop.table()
+```
+
+Note that $\pi$, computed above, is not a random variable. If you run the code for Exercise 1 over and over, you will always get the same exact answer, even without setting a random seed.  In most instances in the real world, you would only have access to a *sample* taken from the population. In this lab, we will explore the relationship between sample statistics and population parameters by taking smaller samples from the full population and comparing the results.
+
+Before we go further, we note that it will be more convenient to work with `0`s and `1`s than `Y` and `N`. Let's create a new variable, `air`, that takes on value `1` for `Yes` and `0` for `No`. It will also be convenient for us to just work with a one-dimensional vector of `1`s and `0`s rather than a full dataframe. So, let's just extract this new `air` variable and store it on its own. Note that ``ames$air`` returns a **vector** whereas ``ames %>% select(air)`` returns a 1-column **data.frame**. In this particular case, working with a vector will make our lives slightly easier. 
+
+```{r, eval=TRUE}
+ames <- ames %>% mutate(air = Central.Air=='Y')
+air <- ames$air
+```
+
+2. Now that `air` is stored as `0`s and `1`s, what mathematical function can we use to compute the population proportion $p$? Write code below and save your result as `pi`.
+
+```{r, eval=TRUE, echo=FALSE}
+pi <- mean(air)
+```
+
+```{r, eval=FALSE}
+pi <- ## Fill in code here
+```
+
+In general, a categorical random variable such as `Central.Air` does not have a standard deviation. Once we store the variable as a list of 0s and 1s, however, we can compute a standard deviation of this list. The standard deviation tell us how far the typical item in the list deviates from the expected value. To make things more concrete, the standard deviation of the ``air`` variable describes the spread of the following histogram. 
+
+```{r, echo=FALSE, eval=TRUE, warning=FALSE,message=FALSE}
+ggplot(data=NULL, aes(x=as.numeric(air))) + geom_histogram( ) + xlab("air")
+```
+
+3. Compute the population standard deviation of this list of 0s and 1s using the ``sd()`` function. Compare your answer to the value `sqrt(pi*(1-pi))`. Are they the same? 
+
+```{r, eval=FALSE}
+pop_sd <- ## Fill in code here
+```
+
+```{r, eval=TRUE, echo=FALSE}
+pop_sd <- sd(air)
+```
+
+
+## Estimating Using a Sample
+
+
+In this lab, you have access to the entire population, but this is rarely the 
+case in real life. Gathering information on an entire population is often 
+extremely costly or impossible, and in these situations we have to use a sample statistic to estimate our parameter of interest. 
+Suppose you were interested in estimating the proportion of houses sold in Ames in this time period with central air conditioning, but you only had access to a random sample of size 50. Your best guess for $\pi$, the poulation proportion, would be $p$, the proportion in your random sample. 
+
+4. Fill in the code chunk below to compute $p$, the sample proportion. Is your answer the same as your neighbors?
+
+```{r}
+samp <- sample(air, size=50, replace=TRUE)
+p <- ### Insert code 
+```
+
+Note that we are drawing with replacement because it ensures that our trials are independent, which will be important for the theory below. Here, our population size is not incredibly large, so sampling without replacement could impact our results. 
+
+Depending on which 50 homes you selected, your estimate could be a bit above 
+or a bit below the true population proportion. Run the code chunk below several times in a row (with no random seed set) and observe how your estimate $p$ changes. Note the variability from sample to sample. 
+
+5. Discusion question: On average, do your estimates seem to be larger than, smaller than, or equal to the poulation proportion $\pi$? Explain your thinking. 
+
+6. How would your answer to the previous exercise change if you took samples of size 20? Size 200? Try out each scenario by running the code chunk below several times. Which sample size yields estimates that tend to be closest to the truth? Which sample size yields estimates with the most variability? 
+
+```{r}
+samp1 <- sample(air, size = 20, replace=TRUE)
+samp2 <- sample(air, size = 50, replace=TRUE)
+samp3 <- sample(air, size = 200, replace=TRUE)
+### Print p1
+### Print p2
+### Print p3
+```
+
+## The Sampling Distribution
+
+As you just discovered, every time you take another random sample, you get a different sample proportion. It's useful to get a sense of just how much variability you should expect when estimating the population proportion this way. The distribution of sample proportions, called the *sampling distribution of the proportion*, can help you understand this variability. 
+
+
+<div id="boxedtext">
+**A note on sampling distributions:**
+A sampling distribution shows what values the sample proportion would take on if we drew samples of size $n$ from the population over and over again. In this lab, since we actually have access to the whole population (and access to R), we will draw thousands of samples from the population and observe the distribution of the sample statistics. In practice, we never actually get to do this; we only get to see one sample. However, understanding the shape, center, and spread of the sampling distribution helps us understand how far we believe our sample statistic might be from the true population parameter. 
+</div>
+
+In this lab, because you have access to the population,
+you can build up the sampling distribution for the sample proportion by repeating the 
+above steps many times. Here, you will generate 100,000 samples of size 20 and compute the 
+sample mean of each. 
+
+```{r}
+set.seed(111)
+ps_20 <- replicate(100000, mean(sample(air, size=20, replace=TRUE)))
+```
+
+Here, we use R to take 100,000 different samples of size 20 from the population, 
+calculate the sample proportion from each sample, and store each result in a vector called 
+`ps_20`. In practice, if we had the whole population available to us we would not bother drawing samples. And in practice, if we did not have the whole population and needed to rely on samples, we would not have 100,000 samples. However, this is still a useful exercise that let's us visualize the abstract idea of a sampling distribution. 
+
+7.  Use `ggplot` to make a histogram of ``ps_20``. Describe the shape, center, and spread. Since ``ps_20`` is not a data.frame, you will need to set ``data=NULL, aes(x=ps_20)``. 
+
+```{r, eval=FALSE, echo=FALSE}
+ggplot(data = NULL, aes(x=ps_20)) + geom_histogram(bins=30)
+```
+
+8. What is the mean of ``ps_20``? How does it compare to the true population proportion $\pi$? 
+
+```{r, eval=FALSE, echo=FALSE}
+mean(phats_20)
+```
+
+1. What is the standard deviation of ``ps_20``? Recall that, since we are working with a sampling distribution we might call this the **standard error**. How does it compare to the standard deviation that you computed in exercise 3?
+
+```{r, eval=FALSE, echo=FALSE}
+sd(air)
+sd(air)/sqrt(20)
+sd(ps_20)
+```
+
+### Effect of sample size
+
+1.  To make sure you understand how sampling distributions are built, try modifying the code that created `ps_20` to make two new objects: ``ps_50`` and ``ps_200``, storing repeated samples of size 50 and repeated samples of size 200. *Once you have filled in code for ``ps_50`` and ``ps_200`` in the codechunk below, be sure to run the chunk all at once (for random seed consistency).*
+    
+```{r loop}
+set.seed(111)
+ps_20 <- replicate(100000, mean(sample(air, size=20, replace=TRUE)))
+### Fill in for size 50
+### Fill in for size 200. 
+```
+
+```{r, echo=FALSE, eval=TRUE}
+set.seed(111)
+phats_20 <- replicate(100000, mean(sample(air, size=20, replace=TRUE)))
+phats_50 <- replicate(100000, mean(sample(air, size=50,replace=TRUE)))
+phats_200 <- replicate(100000, mean(sample(air, size=200, replace=TRUE)))
+```
+
+1. Create histograms for ``ps_50`` and ``ps_200``. How does the shape, center, and spread of the sampling distribution change as you change `n`? 
+
+```{r, echo=FALSE}
+ggplot(data = NULL, aes(x=phats_20)) + geom_histogram(binwidth=1/20)
+ggplot(data = NULL, aes(x=phats_50)) + geom_histogram(binwidth=1/50)
+ggplot(data = NULL, aes(x=phats_200)) + geom_histogram(binwidth=1/200)
+mean(phats_20)
+mean(phats_50)
+mean(phats_200)
+sd(phats_20)
+sd(phats_50)
+sd(phats_200)
+```
+
+1. Does the distribution of ``ps_20`` seem approximately normal? Why or why not? What about ``ps_50`` and ``ps_200``?
+
+<div id="boxedtext">
+**Summary**: 
+Because the sample proportion from a random sample is an unbiased estimator, the sampling distribution is centered at the true population proportion in all cases. However, as sample size increases, the **spread** of the sampling distribution decreases. Furthermore, as the sample size $n$ increases, the sampling distribution gets closer to a normal distribution. 
+</div>
+
+
+## The Central Limit Theorem
+
+The Central Limit Theorem tells us that, as long as certain conditions are met, the histogram of the sample proportions will be well approximated by a normal distribution. The conditions that must be met are:
+
++ Binomial Experiment
++ Success / failure condition: $n \pi \geq 10, n(1-\pi) \geq 10$
++ No bias
+
+1. Explain why the conditions are met to use the Central Limit Theorem with samples of size 200 but not samples of size 50 or 20.
+
+The Central Limit Theorem says that, under these conditions, the sampling distribution will have mean $\pi$, where $\pi$ is the population proportion, and standard error $\sqrt{\pi(1-\pi)/n}$. Run the code below to make a density histogram of `ps_200` with the theoretical sampling distrubtion density curve overlayed.
+
+```{r}
+ggplot(data = NULL, aes(x = ps_200)) +
+        geom_blank() +
+        geom_histogram(bins=30,aes(y = ..density..)) +
+        stat_function(fun = dnorm, args = c(mean = pi, sd = sqrt((pi)*(1-pi)/200)), col = "tomato")
+```
+
+1. Does the empirical sampling distribution appear to match the theoretical?
+
+The central limit theorem (and the properties of the normal distribution) tells us that 95\% of samples should lead to $p$s with values between $\pi - 1.96*\sqrt{\frac{\pi(1-\pi)}{200}}$ and $\pi + 1.96 \sqrt{\frac{\pi(1-\pi)}{200}}$.The code below computes the number of your random samples with $p$ between these bounds.
+
+```{r}
+lower <- pi - 1.96*pop_sd/sqrt(200)
+upper <- pi + 1.96*pop_sd/sqrt(200)
+sum(phats_200 > lower & phats_200 < upper)
+```
+
+1. Report the proportion of your samples that fell between the theoretical bounds. Round your answer to two decimal places.
+
+## Learning Summary
+
+In this lab, you were able to draw repeated samples from a known population and see the Central Limit Theorem in action. You should have seen that, when appropriate conditions are met, the theoretical sampling distribution really does describe what would happen if we were able to take samples over and over again from our population. In real life, when we only get to observe one sample, we can still think about the theoretical sampling distribution. In particular, the spread of the theoretical sampling distribution tells us around how far our sample proportion might be from the population parameter. 
+
+
+
+* * *
+
+## Acknowledgements
+
+This lab is a modified version of an OpenIntro lab, with modifications by Anna Neufeld. 
+
+<div id="license">
+This is a product of OpenIntro that is released under a [Creative Commons 
+Attribution-ShareAlike 3.0 Unported](http://creativecommons.org/licenses/by-sa/3.0).
+This lab was written for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel.
+</div>
+
+

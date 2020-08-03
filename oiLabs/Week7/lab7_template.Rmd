@@ -1,0 +1,136 @@
+---
+title: "Lab 7: Sampling Distributions of Sample Proportions "
+author: "Name"
+date: "08/06/20"
+output: oilabs::lab_report
+---
+
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readr)
+ames <- read_csv("http://bryandmartin.github.io/STAT311/oiLabs/Week7/ames.csv")
+```
+
+* * *
+
+### Exercise 1: 
+
+```{r}
+
+
+```
+
+### Exercise 2:
+
+```{r}
+
+```
+
+**written answer**.
+
+### Exercise 3: 
+
+```{r}
+
+```
+
+**written answer**
+
+
+### Exercise 4: 
+
+```{r}
+
+```
+
+**written answer: what happens when you run code over and over. **
+
+### Exercise 5:
+
+
+### Exercise 6:
+
+```{r}
+samp1 <- sample(air, size=20, replace=TRUE)
+samp2 <- sample(air, size=50, replace=TRUE)
+samp3 <- sample(air, size=200, replace=TRUE)
+### Print p1
+### Print p2
+### Print p3
+
+```
+
+**written answer**
+
+### Exercise 7: 
+
+```{r}
+set.seed(111)
+ps_20 <- replicate(100000, mean(sample(air, size=20, replace=TRUE)))
+```
+
+**describe the plot**
+
+### Exercise 8
+
+```{r}
+
+```
+
+**written answer**
+
+
+### Exercise 9
+
+```{r}
+
+```
+
+**written answer**
+
+### Exercise 10
+
+```{r}
+set.seed(111)
+phats_20 <- replicate(100000, mean(sample(air, size=20, replace=TRUE)))
+### Fill in for size 50
+### Fill in for size 200
+```
+
+### Exercise 11
+```{r}
+## Two histograms
+```
+
+**Written explanation**
+
+### Exercise 12
+
+**Written answer**
+
+### Exercise 13
+
+**Written answer**
+
+### Exercise 14
+
+```{r}
+ggplot(data = NULL, aes(x = ps_200)) +
+        geom_blank() +
+        geom_histogram(bins=30,aes(y = ..density..)) +
+        stat_function(fun = dnorm, args = c(mean = pi, sd = sqrt((pi)*(1-pi)/200)), col = "tomato")
+```
+
+**Written answer**
+
+### Exercise 15
+
+```{r}
+## Include lower and upper bound code
+## And calculations
+```
+
+**Report final answer**. 
+
+

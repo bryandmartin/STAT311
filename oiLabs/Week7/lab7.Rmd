@@ -73,7 +73,8 @@ pi <- ## Fill in code here
 In general, a categorical random variable such as `Central.Air` does not have a standard deviation. Once we store the variable as a list of 0s and 1s, however, we can compute a standard deviation of this list. The standard deviation tell us how far the typical item in the list deviates from the expected value. To make things more concrete, the standard deviation of the ``air`` variable describes the spread of the following histogram. 
 
 ```{r, echo=FALSE, eval=TRUE, warning=FALSE,message=FALSE}
-ggplot(data=NULL, aes(x=as.numeric(air))) + geom_histogram( ) + xlab("air")
+airdata <- data.frame(air)
+ggplot(data=airdata, aes(x=as.numeric(air))) + geom_histogram( ) + xlab("air")
 ```
 
 3. Compute the population standard deviation of this list of 0s and 1s using the ``sd()`` function. Compare your answer to the value `sqrt(pi*(1-pi))`. Are they the same? 
@@ -144,10 +145,11 @@ Here, we use R to take 100,000 different samples of size 20 from the population,
 calculate the sample proportion from each sample, and store each result in a vector called 
 `ps_20`. In practice, if we had the whole population available to us we would not bother drawing samples. And in practice, if we did not have the whole population and needed to rely on samples, we would not have 100,000 samples. However, this is still a useful exercise that let's us visualize the abstract idea of a sampling distribution. 
 
-7.  Use `ggplot` to make a histogram of ``ps_20``. Describe the shape, center, and spread. Since ``ps_20`` is not a data.frame, you will need to set ``data=NULL, aes(x=ps_20)``. 
+7.  Use `ggplot` to make a histogram of ``ps_20``. Describe the shape, center, and spread. 
 
 ```{r, eval=FALSE, echo=FALSE}
-ggplot(data = NULL, aes(x=ps_20)) + geom_histogram(bins=30)
+ps_data <- data.frame(ps_20)
+ggplot(data = ps_data, aes(x=ps_20)) + geom_histogram(bins=30)
 ```
 
 8. What is the mean of ``ps_20``? How does it compare to the true population proportion $\pi$? 
@@ -185,9 +187,10 @@ phats_200 <- replicate(100000, mean(sample(air, size=200, replace=TRUE)))
 1. Create histograms for ``ps_50`` and ``ps_200``. How does the shape, center, and spread of the sampling distribution change as you change `n`? 
 
 ```{r, echo=FALSE}
-ggplot(data = NULL, aes(x=phats_20)) + geom_histogram(binwidth=1/20)
-ggplot(data = NULL, aes(x=phats_50)) + geom_histogram(binwidth=1/50)
-ggplot(data = NULL, aes(x=phats_200)) + geom_histogram(binwidth=1/200)
+X <- data.frame(phats_20, phats_50, phats_200)
+ggplot(data = X, aes(x=phats_20)) + geom_histogram(binwidth=1/20)
+ggplot(data = X, aes(x=phats_50)) + geom_histogram(binwidth=1/50)
+ggplot(data = X, aes(x=phats_200)) + geom_histogram(binwidth=1/200)
 mean(phats_20)
 mean(phats_50)
 mean(phats_200)
@@ -217,7 +220,7 @@ The Central Limit Theorem tells us that, as long as certain conditions are met, 
 The Central Limit Theorem says that, under these conditions, the sampling distribution will have mean $\pi$, where $\pi$ is the population proportion, and standard error $\sqrt{\pi(1-\pi)/n}$. Run the code below to make a density histogram of `ps_200` with the theoretical sampling distrubtion density curve overlayed.
 
 ```{r}
-ggplot(data = NULL, aes(x = ps_200)) +
+ggplot(data = X, aes(x = ps_200)) +
         geom_blank() +
         geom_histogram(bins=30,aes(y = ..density..)) +
         stat_function(fun = dnorm, args = c(mean = pi, sd = sqrt((pi)*(1-pi)/200)), col = "tomato")

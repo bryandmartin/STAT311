@@ -1704,25 +1704,13 @@ div.tocify {
 <ol start="4" style="list-style-type: decimal">
 <li>Make a 95% confidence statement about the parameter in context.</li>
 </ol>
-<!-- 5. Modify your work above to create a 90% confidence interval for the same quantity. What changed?  -->
 </div>
 <div id="testing-a-hypothesis" class="section level2">
 <h2>Testing a Hypothesis</h2>
 <p>We start with the assumption that smoking does not increase the risk of a low birth weight baby, that is, <span class="math inline">\(\pi = 0.1\)</span>. We can then calculate a p-value to see if our sample <span class="math inline">\(p=0.14\)</span> is abnormally large relative to this assumption</p>
 <ol start="5" style="list-style-type: decimal">
-<li>Set up a two-sided hypothesis test to test whether or not <span class="math inline">\(\pi=0.1\)</span> is plausible (write down the null and the alternative).</li>
-</ol>
-<!-- We can use the `z.test` function in the `BSDA` package in R to calculate the p-value for this test. Note that you should install the BSDA package in your console before running this code.  -->
-<!-- ```{r} -->
-<!-- library(BSDA) -->
-<!-- lowbirthweights <- nc_smoke$lowbirthweight == "low" -->
-<!-- p0 <- 0.1 -->
-<!-- sd0 <- sqrt(0.1*0.9) -->
-<!-- lowbirthweights %>% z.test(alternative="two.sided", mu=p0, sigma.x=sd0, conf.level=0.95) -->
-<!-- ``` -->
-<!-- We should verify that we actually understand what this p-value means. -->
-<ol start="7" style="list-style-type: decimal">
-<li>In a world where the null is true (<span class="math inline">\(\pi=0.10\)</span>), what should the sampling distribution of <span class="math inline">\(p\)</span> look like? Fill in the blanks in the code below to plot the sampling distribution.</li>
+<li><p>Set up a two-sided hypothesis test to test whether or not <span class="math inline">\(\pi=0.1\)</span> is plausible (write down the null and the alternative).</p></li>
+<li><p>In a world where the null is true (<span class="math inline">\(\pi=0.10\)</span>), what should the sampling distribution of <span class="math inline">\(p\)</span> look like? Fill in the blanks in the code below to plot the sampling distribution.</p></li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>null_pi &lt;-<span class="st"> </span><span class="co">## Fill in</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a>null_se &lt;-<span class="st"> </span><span class="co">## Fill in</span></span>
@@ -1798,50 +1786,8 @@ div.tocify {
 <ol start="12" style="list-style-type: decimal">
 <li><p>In the simulation experiment above, we conducted the hypothesis test for 10,000 different samples. How many times did we make a type 1 error?</p></li>
 <li><p>How many times did we make a type 2 error?</p></li>
+<li><p>Recall our original hypothesis test with our original, real North Carolina sample. How many of our 10,000 samples in <code>results</code> had <code>p</code> with a zscore that was as large or larger (in magnitude) than the zscore for the phat in the original sample? Relate this number to the original p-value.</p></li>
 </ol>
-<!-- 4. Make a histogram of the distribution of p-values. What do you notice? -->
-<!-- ```{r, echo=FALSE, include=FALSE} -->
-<!-- ggplot(data=results, aes(x=pval)) + geom_histogram(binwidth=0.05) -->
-<!-- ``` -->
-<ol start="14" style="list-style-type: decimal">
-<li>Recall our original hypothesis test with our original, real North Carolina sample. How many of our 10,000 samples in <code>results</code> had <code>p</code> with a zscore that was as large or larger (in magnitude) than the zscore for the phat in the original sample? Relate this number to the original p-value.</li>
-</ol>
-<!-- ### Scenario 2: The Null is False -->
-<!-- Suppose that $p=0.13$, meaning that smoking mothers really are more likely to have underweight babies than the population as a whole. Let's create a hypothetical population where this is true.  -->
-<!-- ```{r} -->
-<!-- popsize <- 100000 -->
-<!-- new_pop <- data.frame(lowbirthweight = c(rep(0, 0.87*popsize), rep(1, 0.13*popsize))) -->
-<!-- ``` -->
-<!-- Now let's repeat our previous simulation. Note that we as researchers don't **know** that the truth is 0.13, so this information will not be plugged in anywhere. We are still testing the null that p=0.1. -->
-<!-- ```{r} -->
-<!-- set.seed(311) -->
-<!-- p0 <- 0.1 -->
-<!-- n <- 126 -->
-<!-- true_sd <- sqrt(p0*(1-p0)/n) -->
-<!-- new_results <- new_pop %>% -->
-<!--         rep_sample_n(size = 126, reps = 10000) %>% -->
-<!--         summarise(phat = mean(lowbirthweight),  -->
-<!--                   se = sqrt(phat*(1-phat)/126), -->
-<!--                   me = 1.96 * se, -->
-<!--                   lower = phat - me, -->
-<!--                   upper = phat + me, -->
-<!--                   CI_covers_truth = (lower < 0.13 && upper > 0.13), -->
-<!--                   CI_covers_null = (lower < p0 && upper > p0), -->
-<!--                   pval = 1-pnorm(phat, mean=p0, sd=true_sd), -->
-<!--                   reject_null = pval < 0.05) -->
-<!-- ``` -->
-<!-- 1. What was the largest observed $\hat{p}$? The smallest?  -->
-<!-- 1. **Quiz Question: ** How many times did you make a type 1 error? -->
-<!-- ```{r, eval=FALSE, include=FALSE} -->
-<!-- ### 0: the null is not true -->
-<!-- ``` -->
-<!-- 1. **Quiz Question: ** How many times did you make a type 2 error?  -->
-<!-- ```{r, eval=FALSE, include=FALSE, echo=FALSE} -->
-<!-- 10000-sum(new_results$reject_null) -->
-<!-- ``` -->
-<!-- 1. Would it have been reasonable to observe a sample such as our original sample (``nc`` dataset) in a population where $p=0.13$? To explain your answer, make a histogram of all of the ``phats`` in ``new_results`` and add a vertical line representing your original sample.  -->
-<!-- <!-- 1. Make a histogram of the distribution of p values. What do you notice? -->
-<!-- 1. Suppose you were to repeat the simulation one more time, but now suppose that the true $p$ is very large, at 0.2. How would the number or errors change? Explain.  -->
 </div>
 </div>
 <div id="summary" class="section level2">
